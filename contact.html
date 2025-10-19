@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contact — DEBOJIT KOL</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
+</head>
+<body>
+<div class="mobile-nav">
+  <a href="index.html">Home</a><a href="tools.html">Tools</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</div>
+<div id="space-background"></div>
+<div id="scrollProg" class="progress"></div>
+<header class="header card">
+  <div class="brand"><img src="photo.jpg" alt="Debojit"><div><strong>DEBOJIT KOL</strong><div class="small">Civil | IIEST Shibpur</div></div></div>
+  <nav class="nav"><a href="index.html">Home</a><a href="tools.html">Tools</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+  <div style="margin-left:auto; display: flex; align-items: center; gap: 12px;">
+    <button data-theme-toggle>Toggle Theme</button>
+    <div class="menu-btn">☰</div>
+  </div>
+</header>
+<main class="container">
+  <section class="card">
+    <h2>Contact</h2>
+    <p class="small">Send me a message.</p>
+    <form id="contactForm" class="small" onsubmit="sendEmail(event)">
+      <label>Name<input id="cname" required></label>
+      <label>Email<input id="cemail" type="email" required></label>
+      <label>Message<textarea id="cmsg" rows="6" required></textarea></label>
+      <p><button type="submit">Send Message</button></p>
+      <div id="cstatus" class="small"></div>
+    </form>
+  </section>
+</main>
+<section class="card container">
+  <h2>Theme Customizer</h2>
+  <p class="small">Pick an accent color — saved in your browser.</p>
+  <div>
+    <div class="color-swatch" data-swatch data-color="#0057b7" style="background:#0057b7"></div>
+    <div class="color-swatch" data-swatch data-color="#0b6623" style="background:#0b6623"></div>
+    <div class="color-swatch" data-swatch data-color="#ff8a00" style="background:#ff8a00"></div>
+    <div class="color-swatch" data-swatch data-color="#8b5cf6" style="background:#8b5cf6"></div>
+  </div>
+</section>
+<footer class="footer card">
+  <div>© 2025 Created by Debojit Kol •
+    <a href="mailto:koldebojit@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://www.instagram.com/debojitkol/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.facebook.com/debojit.kol" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+    <a href="https://www.linkedin.com/in/debojitkol/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="https://github.com/debojitkol" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+  </div>
+</footer>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({ publicKey: "94u5ksrbNWOYetwrn" });
+   })();
+</script>
+<script>
+function sendEmail(e){
+  e.preventDefault();
+  var name = document.getElementById('cname').value;
+  var email = document.getElementById('cemail').value;
+  var msg = document.getElementById('cmsg').value;
+  var status = document.getElementById('cstatus');
+  status.textContent = 'Sending...';
+
+  var serviceID = 'service_soya27v';
+  var templateID = 'template_jori8bq';
+
+  var templateParams = { from_name: name, from_email: email, message: msg };
+
+  emailjs.send(serviceID, templateID, templateParams).then(function(){
+    status.textContent = 'Message sent — thank you!';
+    document.getElementById('contactForm').reset();
+  }).catch(function(err){
+    status.textContent = 'Failed to send. Please check your EmailJS dashboard for errors.';
+    console.error('EmailJS Error:', err);
+  });
+}
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

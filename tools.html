@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>DEBOJIT KOL — Tools</title>
+  <meta name="description" content="Calculators and converters by Debojit Kol.">
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='100%' height='100%' fill='%230057b7'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='8' fill='white'>Created by Debojit Kol © 2025</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
+</head>
+<body>
+<div class="mobile-nav">
+  <a href="index.html">Home</a><a href="tools.html">Tools</a><a href="about.html">About</a><a href="contact.html">Contact</a>
+</div>
+<div id="space-background"></div>
+<div id="scrollProg" class="progress"></div>
+<header class="header card">
+  <div class="brand"><img src="photo.jpg" alt="Debojit"><div><strong>DEBOJIT KOL</strong><div class="small">Civil | IIEST Shibpur</div></div></div>
+  <nav class="nav"><a href="index.html">Home</a><a href="tools.html">Tools</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+  <div style="margin-left:auto; display: flex; align-items: center; gap: 12px;">
+    <button data-theme-toggle>Toggle Theme</button>
+    <div class="menu-btn">☰</div>
+  </div>
+</header>
+<main class="container">
+  <section class="card">
+    <h2>Calculators</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+      <div class="card tilt">
+        <h3>One-Way / Two-Way Slab</h3>
+        <label>Lx (m)<input id="lx" type="number"></label>
+        <label>Ly (m)<input id="ly" type="number"></label>
+        <p><button onclick="determineSlab()">Determine</button></p>
+        <div id="onewayRes" class="small"></div>
+      </div>
+      <div class="card tilt">
+        <h3>Interpolation</h3>
+        <label>x1<input id="ix1" type="number"></label>
+        <label>y1<input id="iy1" type="number"></label>
+        <label>x2<input id="ix2" type="number"></label>
+        <label>y2<input id="iy2" type="number"></label>
+        <label>x<input id="ix" type="number"></label>
+        <p><button onclick="calcInterp()">Determine</button></p>
+        <div id="interpRes" class="small"></div>
+      </div>
+      <div class="card tilt">
+        <h3>Moment Calculation</h3>
+        <label>αx<input id="alpha_x" type="number" value="0.086"></label>
+        <label>αy<input id="alpha_y" type="number" value="0.056"></label>
+        <label>Wu(kN/m²)<input id="Wu" type="number" value="10"></label>
+        <label>Lx(m)<input id="Lx" type="number" value="4"></label>
+        <p><button onclick="calcMoments()">Determine</button></p>
+        <div id="momRes" class="small"></div>
+      </div>
+      <div class="card tilt">
+        <h3>Mu / (b × d²)</h3>
+        <label>Mu(kN·m)<input id="Mu" type="number" value="100"></label>
+        <label>d(mm)<input id="d" type="number" value="500"></label>
+        <label>b(mm)<input id="b" type="number" value="1000" readonly></label>
+        <p><button onclick="calcMu()">Determine</button></p>
+        <div id="muRes" class="small"></div>
+      </div>
+      <div class="card tilt">
+        <h3>Spacing Required</h3>
+        <label>Bar dia φ (mm)<input id="dia" type="number" value="8"></label>
+        <label>Ast (mm²)<input id="ast" type="number" value="500"></label>
+        <p><button onclick="calcSpacing()">Determine</button></p>
+        <div id="spacingRes" class="small"></div>
+      </div>
+      <div class="card tilt">
+        <h3>Ast Required</h3>
+        <label>pt (%)<input id="pt_percent" type="number"></label>
+        <label>Effective depth (d) in mm<input id="effective_provided" type="number"></label>
+        <p><button onclick="calcAstRequired()">Determine</button></p>
+        <div id="astReqRes" class="small"></div>
+      </div>
+    </div>
+  </section>
+  <section class="card">
+    <h2>Unit Converters & Common Formulas</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <div class="card tilt">
+        <h4>Unit Converter</h4>
+        <label>mm to m<input id="mm2m" type="number" placeholder="mm"></label>
+        <p><button onclick="convertMM()">Convert</button></p>
+        <div id="convRes" class="small"></div>
+      </div>
+      <div class="card tilt">
+        <h4>Common RCC & Structural</h4>
+        <ul class="small">
+          <li>Moment (UDL, simply supported): M = wL² / 8</li>
+          <li>Bending stress: f = M / Z</li>
+          <li>Area of bar: Aφ = πφ²/4</li>
+          <li>Convert kN ↔ N: 1 kN = 1000 N</li>
+        </ul>
+      </div>
+      <div class="card tilt">
+        <h4>Export</h4>
+        <p><button id="exportPdf">Export Report as PDF</button></p>
+        <div class="small">PDF includes active results and quote.</div>
+      </div>
+    </div>
+  </section>
+</main>
+<section class="card container">
+  <h2>Theme Customizer</h2>
+  <p class="small">Pick an accent color — saved in your browser.</p>
+  <div>
+    <div class="color-swatch" data-swatch data-color="#0057b7" style="background:#0057b7"></div>
+    <div class="color-swatch" data-swatch data-color="#0b6623" style="background:#0b6623"></div>
+    <div class="color-swatch" data-swatch data-color="#ff8a00" style="background:#ff8a00"></div>
+    <div class="color-swatch" data-swatch data-color="#8b5cf6" style="background:#8b5cf6"></div>
+  </div>
+</section>
+<footer class="footer card">
+  <div>© 2025 Created by Debojit Kol • 
+    <a href="mailto:koldebojit@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a> 
+    <a href="https://www.instagram.com/debojitkol/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a> 
+    <a href="https://www.facebook.com/debojit.kol" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a> 
+    <a href="https://www.linkedin.com/in/debojitkol/" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a> 
+    <a href="https://github.com/debojitkol" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+  </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="shared.js"></script>
+<script>
+function determineSlab(){ var lx=+document.getElementById('lx').value; var ly=+document.getElementById('ly').value; var out=document.getElementById('onewayRes'); if(!lx||!ly){ out.textContent='Enter positive values'; out.style.color='red'; return; } var s=lx,L=ly; if(lx>ly){ s=ly; L=lx; } var ratio=L/s; out.innerHTML='Lx='+s.toFixed(2)+' m, Ly='+L.toFixed(2)+' m — Ratio='+ (Math.round(ratio*100)/100) + ' → ' + (ratio>2?'<strong>One-way slab</strong>':'<strong>Two-way slab</strong>'); out.style.color='var(--accent)'; }
+function calcInterp(){ var x1=+document.getElementById('ix1').value; var y1=+document.getElementById('iy1').value; var x2=+document.getElementById('ix2').value; var y2=+document.getElementById('iy2').value; var x=+document.getElementById('ix').value; var out=document.getElementById('interpRes'); if([x1,y1,x2,y2,x].some(function(v){return isNaN(v)})){ out.textContent='Fill all values'; out.style.color='red'; return; } if(x2===x1){ out.textContent='x1 and x2 cannot be same'; out.style.color='red'; return; } var y=y1+((x-x1)*(y2-y1))/(x2-x1); out.textContent='Interpolated y = '+y.toFixed(4); out.style.color='var(--accent)'; }
+function calcMoments(){ var ax=+document.getElementById('alpha_x').value||0; var ay=+document.getElementById('alpha_y').value||0; var Wu=+document.getElementById('Wu').value||0; var Lx=+document.getElementById('Lx').value||0; var Mx=ax*Wu*Lx*Lx; var My=ay*Wu*Lx*Lx; document.getElementById('momRes').textContent='Mx='+Mx.toFixed(3)+' kN·m/m , My='+My.toFixed(3)+' kN·m/m'; }
+function calcMu(){ var Mu=+document.getElementById('Mu').value||0; var d=+document.getElementById('d').value||0; var b=+document.getElementById('b').value||1000; var res=(Mu*1e6)/(b*d*d); document.getElementById('muRes').textContent='Mu/(b×d²) = '+res.toFixed(6)+' N/mm²'; }
+function calcSpacing(){ var dia=+document.getElementById('dia').value||0; var ast=+document.getElementById('ast').value||0; var out=document.getElementById('spacingRes'); if(!dia||!ast){ out.textContent='Enter values'; out.style.color='red'; return; } var Aphi=Math.PI/4*dia*dia; var spacing=(1000*Aphi)/ast; out.innerHTML='Required Spacing = <strong>'+spacing.toFixed(2)+' mm</strong>'; out.style.color='var(--accent)'; }
+function calcAstRequired(){ var pt = +document.getElementById('pt_percent').value; var effective_d = +document.getElementById('effective_provided').value; var out = document.getElementById('astReqRes'); if(!pt || !effective_d) { out.textContent = 'Enter both values'; out.style.color='red'; return; } var ast = (pt * 1000 * effective_d) / 100; out.innerHTML = 'Ast Required = <strong>' + ast.toFixed(2) + ' mm²</strong>'; out.style.color = 'var(--accent)'; }
+function convertMM(){ var mm=+document.getElementById('mm2m').value||0; document.getElementById('convRes').textContent = (mm/1000).toFixed(4) + ' m'; }
+document.getElementById('exportPdf').addEventListener('click', function(){ var jsPDF = window.jspdf.jsPDF; var doc = new jsPDF(); doc.setFontSize(12); doc.text('DEBOJIT KOL — Calculation Report', 14, 20); doc.setFontSize(10); doc.text('Generated: ' + new Date().toLocaleString(), 14, 28); var one = document.getElementById('onewayRes').innerText || '—'; var interp = document.getElementById('interpRes').innerText || '—'; var mom = document.getElementById('momRes').innerText || '—'; var mu = document.getElementById('muRes').innerText || '—'; var spacing = document.getElementById('spacingRes').innerText || '—'; doc.text('One-way slab: ' + one, 14, 40); doc.text('Interpolation: ' + interp, 14, 48); doc.text('Moments: ' + mom, 14, 56); doc.text('Mu/(b×d²): ' + mu, 14, 64); doc.text('Spacing: ' + spacing, 14, 72); doc.text('Quote: "Great things are done by a series of small things brought together." — Debojit Kol', 14, 90); doc.save('debojit_report.pdf'); });
+</script>
+</body>
+</html>
