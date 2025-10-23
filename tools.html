@@ -73,11 +73,12 @@
         <div id="spacingRes" class="small"></div>
       </div>
       <div class="card tilt">
-        <h3>Ast Required</h3>
-        <label>pt (%)<input id="pt_percent" type="number"></label>
-        <label>Effective depth (d) in mm<input id="effective_provided" type="number"></label>
+        <h3>Ast / Asc Required</h3>
+        <label>Pt or Pc (%)<input id="pt_percent" type="number" placeholder="e.g., 0.8"></label>
+        <label>Width (b) in mm<input id="width_b" type="number" placeholder="e.g., 1000"></label>
+        <label>Effective depth (d) in mm<input id="effective_provided" type="number" placeholder="e.g., 500"></label>
         <p><button onclick="calcAstRequired()">Determine</button></p>
-        <div id="astReqRes" class="small"></div>
+        <div id="astAscReqRes" class="small"></div>
       </div>
     </div>
   </section>
@@ -134,9 +135,9 @@ function calcInterp(){ var x1=+document.getElementById('ix1').value; var y1=+doc
 function calcMoments(){ var ax=+document.getElementById('alpha_x').value||0; var ay=+document.getElementById('alpha_y').value||0; var Wu=+document.getElementById('Wu').value||0; var Lx=+document.getElementById('Lx').value||0; var Mx=ax*Wu*Lx*Lx; var My=ay*Wu*Lx*Lx; document.getElementById('momRes').textContent='Mx='+Mx.toFixed(3)+' kN·m/m , My='+My.toFixed(3)+' kN·m/m'; }
 function calcMu(){ var Mu=+document.getElementById('Mu').value||0; var d=+document.getElementById('d').value||0; var b=+document.getElementById('b').value||1000; var res=(Mu*1e6)/(b*d*d); document.getElementById('muRes').textContent='Mu/(b×d²) = '+res.toFixed(6)+' N/mm²'; }
 function calcSpacing(){ var dia=+document.getElementById('dia').value||0; var ast=+document.getElementById('ast').value||0; var out=document.getElementById('spacingRes'); if(!dia||!ast){ out.textContent='Enter values'; out.style.color='red'; return; } var Aphi=Math.PI/4*dia*dia; var spacing=(1000*Aphi)/ast; out.innerHTML='Required Spacing = <strong>'+spacing.toFixed(2)+' mm</strong>'; out.style.color='var(--accent)'; }
-function calcAstRequired(){ var pt = +document.getElementById('pt_percent').value; var effective_d = +document.getElementById('effective_provided').value; var out = document.getElementById('astReqRes'); if(!pt || !effective_d) { out.textContent = 'Enter both values'; out.style.color='red'; return; } var ast = (pt * 1000 * effective_d) / 100; out.innerHTML = 'Ast Required = <strong>' + ast.toFixed(2) + ' mm²</strong>'; out.style.color = 'var(--accent)'; }
+function calcAstRequired(){ var pt=+document.getElementById('pt_percent').value; var b=+document.getElementById('width_b').value; var d=+document.getElementById('effective_provided').value; var out=document.getElementById('astAscReqRes'); if(!pt||!b||!d){ out.textContent='Enter all three values'; out.style.color='red'; return; } var ast=(pt*b*d)/100; out.innerHTML='Ast / Asc Required = <strong>'+ast.toFixed(2)+' mm²</strong>'; out.style.color='var(--accent)'; }
 function convertMM(){ var mm=+document.getElementById('mm2m').value||0; document.getElementById('convRes').textContent = (mm/1000).toFixed(4) + ' m'; }
-document.getElementById('exportPdf').addEventListener('click', function(){ var jsPDF = window.jspdf.jsPDF; var doc = new jsPDF(); doc.setFontSize(12); doc.text('DEBOJIT KOL — Calculation Report', 14, 20); doc.setFontSize(10); doc.text('Generated: ' + new Date().toLocaleString(), 14, 28); var one = document.getElementById('onewayRes').innerText || '—'; var interp = document.getElementById('interpRes').innerText || '—'; var mom = document.getElementById('momRes').innerText || '—'; var mu = document.getElementById('muRes').innerText || '—'; var spacing = document.getElementById('spacingRes').innerText || '—'; doc.text('One-way slab: ' + one, 14, 40); doc.text('Interpolation: ' + interp, 14, 48); doc.text('Moments: ' + mom, 14, 56); doc.text('Mu/(b×d²): ' + mu, 14, 64); doc.text('Spacing: ' + spacing, 14, 72); doc.text('Quote: "Great things are done by a series of small things brought together." — Debojit Kol', 14, 90); doc.save('debojit_report.pdf'); });
+document.getElementById('exportPdf').addEventListener('click', function(){ var jsPDF = window.jspdf.jsPDF; var doc = new jsPDF(); doc.setFontSize(12); doc.text('DEBOJIT KOL — Calculation Report', 14, 20); doc.setFontSize(10); doc.text('Generated: ' + new Date().toLocaleString(), 14, 28); var one = document.getElementById('onewayRes').innerText || '—'; var interp = document.getElementById('interpRes').innerText || '—'; var mom = document.getElementById('momRes').innerText || '—'; var mu = document.getElementById('muRes').innerText || '—'; var spacing = document.getElementById('spacingRes').innerText || '—'; doc.text('One-way slab: ' + one, 14, 40); doc.text('Interpolation: ' + interp, 14, 48); doc.text('Moments: ' + mom, 14, 56); doc.text('Mu/(b×d²): ' + mu, 14, 64); doc.text('Spacing: ' + spacing, 14, 72); doc.text('Quote: "Great things are done by a series of small things brought together.” — Debojit Kol', 14, 90); doc.save('debojit_report.pdf'); });
 </script>
 </body>
 </html>
